@@ -1,16 +1,12 @@
-Java-Spring-REST-App-Skeleton
-=============================
+Maven Spring-REST-App-Archetype
+===============================
 
-First steps with spring. In order to learn how spring works, I did this all manually. Next time I will use roo, since I should be able to understand what magic it does.
+Generate
+--------
 
-Eclipse
--------
+Create your copy with maven archetype generate:
 
-* [Eclipse Helios for Java EE Developer](http://www.eclipse.org/downloads/packages/eclipse-ide-java-ee-developers/heliossr2)
-Via Help/Eclipse Marketplace:
-* SpringSource Tool Suite
-* Spring IDE
-* Maven Integration for Eclipse
+    mvn archetype:generate -DarchetypeGroupId=com.philippkoelmel  -DarchetypeArtifactId=spring-rest-webapp-archetype  -DarchetypeVersion=0.0.1-SNAPSHOT  -DarchetypeRepository=https://github.com/Hechtenheld/maven-repo/raw/master/snapshots
 
 Customize
 ---------
@@ -41,7 +37,7 @@ This file defines the reference to the production database.
 Configures a JDBC datasource for testing that points to a HSQLDB and a database called `skeleton`. Find more options in `test-datasource.xml`. If you use another DBMS, please also change the dependencies to HSQL in the `pom.xml`.
 
     driverClass=org.hsqldb.jdbcDriver
-    jdbcUrl=jdbc:hsqldb:mem:aname
+    jdbcUrl=jdbc:hsqldb:mem:test
     user=sa
     password=
     databasePlatform=org.hibernate.dialect.HSQLDialect
@@ -50,7 +46,7 @@ Configures a JDBC datasource for testing that points to a HSQLDB and a database 
 
 All context files are imported by this one. Except the datasource definition which is imported by the `dispatcher-servlet.xml` if run in a web container or `test-context.xml` if a test is executed. In this file just change the `base-package` attribute to your package name.
 
-    <context:component-scan base-package="skeleton" />
+    <context:component-scan base-package="your.package.skeleton" />
 
 ### src/main/resources/META-INF/spring-context/dao.xml
 
@@ -63,6 +59,19 @@ The `entityManagerFactory` is defined in this file. You need to change the prope
     	<property name="jpaVendorAdapter" ref="jpaVendorAdapter">
     	</property>
     </bean>
+
+### src/main/resources/META-INF/persistence.xml
+
+Add you entity classes here. Maybe you also want to rename the PU by changing the attribute `name` of the `persistence-unit` tag.
+
+    <persistence version="2.0"
+    	xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+    	<persistence-unit name="skeletonPU">
+    		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+    		<class>com.philippkoelmel.skeleton.skull.Skull</class>
+    	</persistence-unit>
+    </persistence>
 
 ### src/main/resources/META-INF/spring-context/datasource.xml
 
@@ -94,13 +103,12 @@ You can do two things here:
     	<junit.version>4.8.2</junit.version>
     ...
 
+Eclipse
+-------
 
-
-
-
-
-
-
-
-
+* [Eclipse Helios for Java EE Developer](http://www.eclipse.org/downloads/packages/eclipse-ide-java-ee-developers/heliossr2)
+Via Help/Eclipse Marketplace:
+* SpringSource Tool Suite
+* Spring IDE
+* Maven Integration for Eclipse
 
